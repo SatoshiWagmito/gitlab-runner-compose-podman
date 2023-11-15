@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  gitlab:
+    container_name: gitlab-ce
+    image: "gitlab/gitlab-ce:latest"
+    restart: always
+    hostname: "192.168.0.14"
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://10.89.0.2'
+        gitlab_rails['gitlab_shell_ssh_port'] = 1022
+    ports:
+      - "80:80"
+      - "443:443"
+      - "1022:22"
+    volumes:
+      - "./gitlab/config:/etc/gitlab"
+      - "./gitlab/logs:/var/log/gitlab"
+      - "./gitlab/data:/var/opt/gitlab"
+    networks:
+      glnetwork:
+        ipv4_address: 10.89.0.2
+
+  runner:
+    image: gitlab/gitlab-runner:alpine
+    restart: always
+    container_name: gitlab-runner
+    hostname: gitlab-runner
+    depends_on:
+      - gitlab
+    volumes:
+      - ./config/gitlab-runner:/etc/gitlab-runner
+      - /run/user/1000/podman/podman.sock:/run/user/1000/podman/podman.sock
+    networks:
+      - glnetwork
+
+networks:
+  glnetwork:
+    name: glnetwork

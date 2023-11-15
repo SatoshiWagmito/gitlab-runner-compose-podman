@@ -1,0 +1,30 @@
+concurrent = 8
+check_interval = 0
+shutdown_timeout = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "podman-stable"
+  url = "http://10.89.0.2"
+  id = 3
+  token = "<your runner token>"
+  token_obtained_at = <...see your runner>
+  token_expires_at = <...see your runner>
+  executor = "docker"
+  environment = ["FF_NETWORK_PER_BUILD=1"]
+  [runners.docker]
+    host = "unix:///run/user/1000/podman/podman.sock"
+    tls_verify = false
+    image = "alpine:3.18"
+    privileged = true
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = false
+    volumes = ["/cache"]
+    network_mode = "glnetwork"
+    allowed_pull_policies = ["always", "if-not-present"]
+    shm_size = 0
+    limit = 8
+    network_mtu = 0
