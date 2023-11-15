@@ -29,19 +29,20 @@ IMHO, Let's just say that while Podman is the future:) it still has some ecosyst
 
 ## Running steps
 
-1. docker-compose up
+1. docker-compose up 
+    Note: Before you have configured your first runner there will be some errors here of type "ERROR: Failed to load config stat /etc/gitlab-runner/config.toml:". Just ignore.
 
     > Change root password for gitlabce
 
-2. podman exec -it gitlab gitlab-rake "gitlab:password:reset[root]"
+2. podman exec -it gitlab-ce gitlab-rake "gitlab:password:reset[root]"
 
 3. docker-compose down && docker-compose un
 
 4. Go to the GitLab UI at 127.0.0.1 or 10.89.0.2 :) and login with root/pw-you-changed-to
 
-5. Search for admin area in GUI,
+5. Search for admin area in GUI (Search -> Admin)
 
-6. Add new instance runner under CI (if the ip changes suddenly here after applying, just change it back and enter)
+6. Add new instance runner under CI (if the ip changes suddenly here after applying, just change it back and enter, it has happened a few times)
 
 7. You should now see an instruction page for how to register the runner, and a token.
 
@@ -51,7 +52,7 @@ IMHO, Let's just say that while Podman is the future:) it still has some ecosyst
     > gitlab-runner register
     > ...follow steps
 
-9. Still in the runner container do: vi /etc/gitlab-runner/config.toml
+9. Still in the runner container : vi /etc/gitlab-runner/config.toml
 
 10. Have a look at the runner.example.toml in this project and add what you need: host, privileged and FF_NET.. are needed for podman at least.
 
