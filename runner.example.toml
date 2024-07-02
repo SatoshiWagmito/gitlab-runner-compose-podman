@@ -6,8 +6,8 @@ shutdown_timeout = 0
   session_timeout = 1800
 
 [[runners]]
-  name = "podman-stable"
-  url = "http://10.89.0.2"
+  name = "gitlab-runner.dev"
+  url = "http://10.5.0.5"
   id = 3
   token = "<your runner token>"
   token_obtained_at = <...see your runner>
